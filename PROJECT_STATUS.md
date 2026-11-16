@@ -23,7 +23,7 @@ Spend: none
 ## Documentation and listing
 - [x] Wiki pages written: Compatibility, Scripting and Hearth (w:2)
 - [x] CurseForge description (what it does, features, settings, compatibility, FAQ only) (w:1)
-- [ ] Banner and gallery images (w:1)
+- [x] Banner and gallery images (w:1)
 
 ## Release
 - [ ] GitHub repository, CI and release workflow (w:2)
