@@ -31,8 +31,11 @@ public class ThoroughHomesteadingJadePlugin implements IWailaPlugin {
         IServerDataProvider<BlockAccessor> provider = new IServerDataProvider<>() {
             @Override
             public void appendServerData(CompoundTag data, BlockAccessor accessor) {
-                if (accessor.getBlockEntity() instanceof HearthBlockEntity hearth && accessor.getLevel() instanceof ServerLevel level) {
-                    data.put("values", LookAt.toTag(LookAt.values(level, hearth)));
+                if (accessor.getBlockEntity() instanceof HearthBlockEntity part && accessor.getLevel() instanceof ServerLevel level) {
+                    HearthBlockEntity hearth = part.home();
+                    if (hearth != null) {
+                        data.put("values", LookAt.toTag(LookAt.values(level, hearth)));
+                    }
                 }
             }
 

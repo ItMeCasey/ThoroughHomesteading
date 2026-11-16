@@ -34,7 +34,7 @@ This note says what the design spec decided, what the code does, and which defau
 
 | Open item | Choice |
 |---|---|
-| Hearth look | A low block (10 pixels high). Stone Hearth: stone-brick base. Iron Hearth: iron-block base. Golden Hearth: gold-block base. Each has an ash pit that glows when lit. |
+| Hearth look | Two blocks tall, like a door (the upper half needs the block above free). Stone Hearth: a campfire in a stone ring with a bell hung from a wooden pole. Iron Hearth: an iron ring, a banded iron post with a brace and a bell. Golden Hearth: a gold gazebo with gem inlays, a stepped roof and a bell hanging over the fire. The fire shows when lit. Models and textures come from `scripts/make_hearth_models.py` and `make_hearth_textures.py`. |
 | Tier names | Stone, Iron, Golden. |
 | Trade tables | None shipped. Settlers trade like vanilla villagers of their profession until a pack adds trade files. |
 | Settling recipes | The 13 vanilla workstation and profession pairs (below). All use tier 1 and the `food_required` default of 20. |

@@ -36,7 +36,7 @@ public class HearthUpgradeItem extends Item {
         if (level.isClientSide()) {
             return InteractionResult.SUCCESS;
         }
-        if (player != null && level.getBlockEntity(pos) instanceof HearthBlockEntity entity && !entity.canManage(player)) {
+        if (player != null && level.getBlockEntity(pos) instanceof HearthBlockEntity part && part.home() != null && !part.home().canManage(player)) {
             return InteractionResult.PASS;
         }
         if (!target.upgradesFrom(hearth.tier())) {

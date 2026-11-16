@@ -8,7 +8,7 @@ In a void or skyblock world there is no village, so there are no villagers and n
 
 # Features
 
-- **Three Hearths:** Stone, Iron and Golden. Radius 8, 12 and 16 blocks, room for 2, 4 and 8 settlers, and arrival after 6000, 4000 and 2400 ticks by default. Golden settlers arrive with trade level 2 already unlocked.
+- **Three Hearths:** Stone, Iron and Golden, each two blocks tall: a campfire with a bell on a pole, an iron post with braces and a bell, and a golden gazebo set with gems. Radius 8, 12 and 16 blocks, room for 2, 4 and 8 settlers, and arrival after 6000, 4000 and 2400 ticks by default. Golden settlers arrive with trade level 2 already unlocked.
 - **Upgrades:** an Iron or Golden Hearth Upgrade raises a Hearth one tier. Contents, owner, settlers and the lit state stay.
 - **The home check:** a free bed, a free workstation, enough light at the bed, food, and room for another settler. When one is missing the countdown waits and the look-at lines show which.
 - **Profession from the workstation:** a composter makes a farmer, a smithing table a toolsmith. The nearest free workstation wins, and nothing is random. Workstations of other mods work as soon as a settling recipe names them.

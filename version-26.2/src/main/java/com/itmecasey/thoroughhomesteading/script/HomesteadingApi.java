@@ -64,15 +64,15 @@ public final class HomesteadingApi {
         BlockPos pos = new BlockPos(x, y, z);
         if (dimension != null && !dimension.isEmpty()) {
             ServerLevel level = ScriptHost.level(dimension);
-            return level != null && level.getBlockEntity(pos) instanceof HearthBlockEntity h ? h : null;
+            return level != null && level.getBlockEntity(pos) instanceof HearthBlockEntity h ? h.home() : null;
         }
         ServerLevel overworld = server.overworld();
         if (overworld.getBlockEntity(pos) instanceof HearthBlockEntity h) {
-            return h;
+            return h.home();
         }
         for (ServerLevel level : server.getAllLevels()) {
             if (level.getBlockEntity(pos) instanceof HearthBlockEntity h) {
-                return h;
+                return h.home();
             }
         }
         return null;

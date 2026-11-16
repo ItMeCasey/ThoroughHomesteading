@@ -35,11 +35,14 @@ def write(path, data):
 
 
 def loot(block, style):
+    # A Hearth is two blocks tall: only the lower half drops the item (the upper half drops nothing), like a door.
+    lower = {"block": f"{MOD}:{block}", "properties": {"half": "lower"}}
     if style == "old":
         pool = {"rolls": 1, "bonus_rolls": 0, "entries": [{"type": "minecraft:item", "name": f"{MOD}:{block}"}],
-                "conditions": [{"condition": "minecraft:survives_explosion"}]}
+                "conditions": [{"condition": "minecraft:block_state_property", **lower}, {"condition": "minecraft:survives_explosion"}]}
     else:
-        pool = {"rolls": 1, "condition": {"type": "minecraft:survives_explosion"},
+        pool = {"rolls": 1, "condition": {"type": "minecraft:all_of", "terms": [{"type": "minecraft:block_state_property", **lower},
+                                                                                 {"type": "minecraft:survives_explosion"}]},
                 "entries": [{"type": "minecraft:item", "name": f"{MOD}:{block}"}]}
     return {"type": "minecraft:block", "pools": [pool], "random_sequence": f"{MOD}:blocks/{block}"}
 

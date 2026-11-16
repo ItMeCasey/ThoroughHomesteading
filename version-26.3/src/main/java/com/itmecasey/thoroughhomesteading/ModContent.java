@@ -42,7 +42,9 @@ public final class ModContent {
             String name = tier.blockName();
             HearthBlock block = new HearthBlock(tier, BlockBehaviour.Properties.of().setId(ResourceKey.create(Registries.BLOCK, id(name)))
                     .mapColor(colors[tier.ordinal()]).strength(3.0F + tier.ordinal(), 6.0F + 3 * tier.ordinal()).sound(SoundType.STONE)
-                    .requiresCorrectToolForDrops().noOcclusion().lightLevel(s -> s.getValue(HearthBlock.LIT) ? 13 : 0));
+                    .requiresCorrectToolForDrops().noOcclusion().pushReaction(net.minecraft.world.level.material.PushReaction.IMMOVEABLE)
+                    .lightLevel(s -> s.getValue(HearthBlock.LIT)
+                            && s.getValue(HearthBlock.HALF) == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER ? 13 : 0));
             HEARTHS.put(tier, block);
             BLOCKS.put(name, block);
             ITEMS.put(name, new BlockItem(block, itemProps(name).useBlockDescriptionPrefix()));

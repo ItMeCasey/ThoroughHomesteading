@@ -43,6 +43,8 @@ def copy_tree(src, dst, transform=None, variants=None):
 
 
 def v263(text):
+    # 26.3 renamed the push reaction BLOCK to IMMOVEABLE.
+    text = text.replace("PushReaction.BLOCK", "PushReaction.IMMOVEABLE")
     if "// CODEC-BEGIN" not in text:
         return text
     text = re.sub(r"\n    // CODEC-BEGIN\n.*?\n    // CODEC-END\n", "\n", text, flags=re.S)

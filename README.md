@@ -15,6 +15,8 @@ Docs: https://itmecasey.com/wiki/thoroughhomesteading/ (not deployed yet). Listi
 
 The settler is a plain vanilla villager: it takes the nearest free workstation, claims the nearest free bed, and follows vanilla rules from then on. A settler whose bed or workstation is gone stays a normal villager and stops counting toward the Hearth's population.
 
+A Hearth is two blocks tall, like a door, and needs the block above its spot free. Using or breaking either half acts on the whole Hearth.
+
 Ownership: the player who places a Hearth owns it; the owner (and their Barely Questing team when that mod is installed) feeds, upgrades and breaks it. Hoppers always insert.
 
 Scripting: with ModJS, server scripts get a `Homesteading` global and a `HomesteadingEvents` global; see [docs/scripting.md](docs/scripting.md). KubeJS: recipes, trades and tiers are datapack JSON, plus a helper script that exposes the same globals. Barely Questing: a `settler` task type.

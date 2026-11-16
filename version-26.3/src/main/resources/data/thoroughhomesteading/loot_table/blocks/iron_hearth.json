@@ -4,7 +4,19 @@
     {
       "rolls": 1,
       "condition": {
-        "type": "minecraft:survives_explosion"
+        "type": "minecraft:all_of",
+        "terms": [
+          {
+            "type": "minecraft:block_state_property",
+            "block": "thoroughhomesteading:iron_hearth",
+            "properties": {
+              "half": "lower"
+            }
+          },
+          {
+            "type": "minecraft:survives_explosion"
+          }
+        ]
       },
       "entries": [
         {

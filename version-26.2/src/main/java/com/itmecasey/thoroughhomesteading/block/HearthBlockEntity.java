@@ -32,6 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.DoubleBlockHalf;
 import net.minecraft.world.level.storage.ValueInput;
 import net.minecraft.world.level.storage.ValueOutput;
 import org.jetbrains.annotations.Nullable;
@@ -64,6 +65,20 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     public boolean lit() {
         return getBlockState().getValue(HearthBlock.LIT);
+    }
+
+    /** A Hearth is two blocks tall. The lower half holds everything; the upper half's block entity only forwards to it, so look-at overlays and hoppers work from either half. */
+    public boolean isUpper() {
+        return getBlockState().hasProperty(HearthBlock.HALF) && getBlockState().getValue(HearthBlock.HALF) == DoubleBlockHalf.UPPER;
+    }
+
+    /** The block entity that holds the state: this one, or the lower half's when this is the upper half; null if the lower half is missing. */
+    @Nullable
+    public HearthBlockEntity home() {
+        if (!isUpper()) {
+            return this;
+        }
+        return level != null && level.getBlockEntity(worldPosition.below()) instanceof HearthBlockEntity low && !low.isUpper() ? low : null;
     }
 
     // ---- Ownership ----
@@ -143,6 +158,10 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     /** Puts a stack into the Hearth by hand or from a hopper; returns what did not fit. */
     public ItemStack insert(ItemStack stack) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null ? stack : low.insert(stack);
+        }
         if (stack.isEmpty() || !acceptable(stack)) {
             return stack;
         }
@@ -331,6 +350,10 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     @Override
     public boolean isEmpty() {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null || low.isEmpty();
+        }
         for (ItemStack s : items) {
             if (!s.isEmpty()) {
                 return false;
@@ -341,11 +364,19 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     @Override
     public ItemStack getItem(int slot) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null ? ItemStack.EMPTY : low.getItem(slot);
+        }
         return slot >= 0 && slot < SLOTS ? items.get(slot) : ItemStack.EMPTY;
     }
 
     @Override
     public ItemStack removeItem(int slot, int count) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null ? ItemStack.EMPTY : low.removeItem(slot, count);
+        }
         ItemStack out = ContainerHelper.removeItem(items, slot, count);
         if (!out.isEmpty()) {
             setChanged();
@@ -355,11 +386,22 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     @Override
     public ItemStack removeItemNoUpdate(int slot) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null ? ItemStack.EMPTY : low.removeItemNoUpdate(slot);
+        }
         return ContainerHelper.takeItem(items, slot);
     }
 
     @Override
     public void setItem(int slot, ItemStack stack) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            if (low != null) {
+                low.setItem(slot, stack);
+            }
+            return;
+        }
         if (slot >= 0 && slot < SLOTS) {
             items.set(slot, stack);
             setChanged();
@@ -373,22 +415,37 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     @Override
     public void clearContent() {
+        if (isUpper()) {
+            return;
+        }
         items.clear();
         setChanged();
     }
 
     @Override
     public boolean canPlaceItem(int slot, ItemStack stack) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low != null && low.canPlaceItem(slot, stack);
+        }
         return acceptable(stack);
     }
 
     @Override
     public int[] getSlotsForFace(Direction side) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null ? new int[0] : low.getSlotsForFace(side);
+        }
         return side == Direction.DOWN ? new int[0] : INSERT_SLOTS;
     }
 
     @Override
     public boolean canPlaceItemThroughFace(int slot, ItemStack stack, @Nullable Direction face) {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low != null && low.canPlaceItemThroughFace(slot, stack, face);
+        }
         return face != Direction.DOWN && acceptable(stack);
     }
 
@@ -399,6 +456,10 @@ public class HearthBlockEntity extends BlockEntity implements WorldlyContainer {
 
     /** The comparator reads how full the nine slots are. */
     public int comparatorSignal() {
+        if (isUpper()) {
+            HearthBlockEntity low = home();
+            return low == null ? 0 : low.comparatorSignal();
+        }
         return AbstractContainerMenu.getRedstoneSignalFromContainer(this);
     }
 

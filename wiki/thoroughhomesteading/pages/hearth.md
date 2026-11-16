@@ -4,10 +4,11 @@ summary: The block that runs the home check, holds the food and brings the settl
 infobox:
   Ids: stone_hearth, iron_hearth, golden_hearth
   Screen: None
+  Height: 2 blocks
   Holds: 9 stacks of food
   Comparator: Fullness of the 9 slots
 ---
-The Hearth is a low block, 10 pixels high. It checks its surroundings, keeps the food, remembers its settlers and runs the countdown. A Hearth only works while its chunk is loaded.
+A Hearth is two blocks tall, like a door. The lower half holds the fire and the food; the upper half is the pole and the bell (a roof and a hanging bell on the Golden Hearth). The block above the spot where you place it must be free, and using or breaking either half acts on the whole Hearth. The scan starts at the lower half. It checks its surroundings, keeps the food, remembers its settlers and runs the countdown. A Hearth only works while its chunk is loaded.
 
 ## Tiers
 

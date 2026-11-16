@@ -16,8 +16,11 @@ public class ThoroughHomesteadingSmwtiPlugin implements ISmwtiPlugin {
     @Override
     public void register(CommonRegistration registration) {
         registration.serverBlock((tooltip, level, pos, entity, detailed) -> {
-            if (entity instanceof HearthBlockEntity hearth && level instanceof ServerLevel server) {
-                LookAt.lines(server, hearth).forEach(tooltip::add);
+            if (entity instanceof HearthBlockEntity part && level instanceof ServerLevel server) {
+                HearthBlockEntity hearth = part.home();
+                if (hearth != null) {
+                    LookAt.lines(server, hearth).forEach(tooltip::add);
+                }
             }
         });
     }

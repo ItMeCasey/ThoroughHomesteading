@@ -35,6 +35,7 @@ See [[home-check]] for the full rules.
 ## Other things to check
 
 - The Hearth must be lit. An unlit Hearth does not count down.
+- A Hearth will not place when the block above the spot is not free: it is two blocks tall. Clear the block above it (air and other replaceable blocks such as grass are fine).
 - The beds and workstations must be inside the reach of the tier (8, 12 or 16 blocks across, 6 up and down). See [[hearth]].
 - The countdown stands still while a requirement fails. It keeps its progress and continues when the home is complete again.
 - Scripts can stop an arrival with `beforeSettle`. A script that does so shows no look-at reason. See [[scripting]].

@@ -111,6 +111,7 @@ public final class SelfTest {
             step("upgrades", SelfTest::upgrades);
             step("ownership", SelfTest::ownership);
             step("using_items_on_a_hearth", SelfTest::useItems);
+            step("two_blocks_tall", SelfTest::twoBlocksTall);
             step("save_and_load", SelfTest::saveAndLoad);
             step("trade_files", SelfTest::trades);
             step("look_at_lines", SelfTest::lookAt);
@@ -166,7 +167,9 @@ public final class SelfTest {
     }
 
     private static HearthBlockEntity hearth(BlockPos pos, HearthTier tier, boolean lit) {
-        level.setBlock(pos, ModContent.hearth(tier).defaultBlockState().setValue(HearthBlock.LIT, lit), 3);
+        BlockState lower = ModContent.hearth(tier).defaultBlockState().setValue(HearthBlock.LIT, lit);
+        level.setBlock(pos, lower, 3);
+        level.setBlock(pos.above(), lower.setValue(HearthBlock.HALF, net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER), 3);
         HearthBlockEntity be = (HearthBlockEntity) level.getBlockEntity(pos);
         be.setOwner(owner.getUUID());
         return be;
@@ -267,7 +270,8 @@ public final class SelfTest {
         HearthBlock.extinguish(level, c, level.getBlockState(c));
         verdict("extinguishing_clears_lit", !level.getBlockState(c).getValue(HearthBlock.LIT), "");
         verdict("lit_and_out_events_fire", events.equals(List.of("lit stone " + c.getX(), "out stone")), events.toString());
-        verdict("shape_is_a_low_block", level.getBlockState(c).getShape(level, c).max(Direction.Axis.Y) < 0.7, "");
+        verdict("both_halves_have_a_shape", level.getBlockState(c).getShape(level, c).max(Direction.Axis.Y) > 0.3
+                && level.getBlockState(c.above()).getShape(level, c.above()).max(Direction.Axis.Y) > 0.9, "");
         verdict("hearth_has_a_block_entity", h != null && h.tier() == HearthTier.STONE, "");
     }
 
@@ -609,6 +613,82 @@ public final class SelfTest {
         level.setBlock(p, ModContent.hearth(HearthTier.STONE).defaultBlockState(), 3);
         ModContent.hearth(HearthTier.STONE).setPlacedBy(level, p, level.getBlockState(p), stranger, new ItemStack(ModContent.item("stone_hearth")));
         verdict("placing_sets_the_owner", stranger.getUUID().equals(((HearthBlockEntity) level.getBlockEntity(p)).owner()), "");
+        verdict("placing_adds_the_upper_half", level.getBlockState(p.above()).getBlock() == ModContent.hearth(HearthTier.STONE)
+                && level.getBlockState(p.above()).getValue(HearthBlock.HALF) == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER, "");
+    }
+
+    private static void twoBlocksTall() {
+        var upperHalf = net.minecraft.world.level.block.state.properties.DoubleBlockHalf.UPPER;
+        BlockPos c = platform();
+        HearthBlockEntity h = hearth(c, HearthTier.STONE, false);
+        BlockPos up = c.above();
+        verdict("a_hearth_is_two_blocks_tall", level.getBlockState(up).getBlock() == ModContent.hearth(HearthTier.STONE)
+                && level.getBlockState(up).getValue(HearthBlock.HALF) == upperHalf
+                && level.getBlockState(c).getValue(HearthBlock.HALF) == net.minecraft.world.level.block.state.properties.DoubleBlockHalf.LOWER, "");
+        verdict("the_upper_half_forwards_to_the_lower_one", level.getBlockEntity(up) instanceof HearthBlockEntity part && part.isUpper() && part.home() == h
+                && h.home() == h, "");
+        ItemStack steel = new ItemStack(Items.FLINT_AND_STEEL);
+        verdict("lighting_the_upper_half_lights_both", use(up, steel, owner).consumesAction() && level.getBlockState(c).getValue(HearthBlock.LIT)
+                && level.getBlockState(up).getValue(HearthBlock.LIT), "");
+        verdict("only_the_lower_half_gives_light", level.getBlockState(c).getLightEmission() == 13 && level.getBlockState(up).getLightEmission() == 0, "");
+        ItemStack bread = new ItemStack(Items.BREAD, 2);
+        verdict("food_into_the_upper_half_goes_to_the_lower_one", use(up, bread, owner).consumesAction() && h.nutrition() == 10, "n=" + h.nutrition());
+        HearthBlockEntity part = (HearthBlockEntity) level.getBlockEntity(up);
+        verdict("hoppers_can_fill_it_through_the_upper_half", HopperBlockEntity.addItem(null, part, new ItemStack(Items.BREAD, 1), Direction.UP).isEmpty()
+                && h.nutrition() == 15, "n=" + h.nutrition());
+        verdict("the_upper_half_reads_the_same_comparator_signal", part.comparatorSignal() == h.comparatorSignal() && h.comparatorSignal() > 0, "");
+        verdict("the_upper_half_holds_nothing_itself", !part.isEmpty() == !h.isEmpty() && part.getContainerSize() == HearthBlockEntity.SLOTS, "");
+        verdict("a_shovel_on_the_upper_half_puts_both_out", use(up, new ItemStack(Items.IRON_SHOVEL), owner).consumesAction()
+                && !level.getBlockState(c).getValue(HearthBlock.LIT) && !level.getBlockState(up).getValue(HearthBlock.LIT), "");
+        use(up, steel, owner);
+        ItemStack ironUp = new ItemStack(ModContent.upgrade(HearthTier.IRON));
+        verdict("an_upgrade_on_the_upper_half_replaces_both", use(up, ironUp, owner).consumesAction()
+                && level.getBlockState(c).getBlock() == ModContent.hearth(HearthTier.IRON) && level.getBlockState(up).getBlock() == ModContent.hearth(HearthTier.IRON)
+                && level.getBlockState(up).getValue(HearthBlock.HALF) == upperHalf && level.getBlockState(c).getValue(HearthBlock.LIT)
+                && level.getBlockState(up).getValue(HearthBlock.LIT) && ((HearthBlockEntity) level.getBlockEntity(c)).nutrition() == 15, "");
+        // Placement needs the block above free.
+        BlockPos p = c.offset(5, 0, 0);
+        var hit = new net.minecraft.world.phys.BlockHitResult(net.minecraft.world.phys.Vec3.atCenterOf(p.below()), Direction.UP, p.below(), false);
+        var ctx = new net.minecraft.world.item.context.BlockPlaceContext(level, owner, net.minecraft.world.InteractionHand.MAIN_HAND,
+                new ItemStack(ModContent.item("stone_hearth")), hit);
+        level.setBlock(p.above(), Blocks.STONE.defaultBlockState(), 3);
+        verdict("placement_needs_the_block_above_free", ModContent.hearth(HearthTier.STONE).getStateForPlacement(ctx) == null, "");
+        level.setBlock(p.above(), Blocks.AIR.defaultBlockState(), 3);
+        verdict("placement_works_with_room_above", ModContent.hearth(HearthTier.STONE).getStateForPlacement(ctx) != null, "");
+        // Breaking either half removes both and drops the Hearth once.
+        BlockPos q = c.offset(0, 0, 5);
+        hearth(q, HearthTier.STONE, false);
+        net.minecraft.world.phys.AABB box = new net.minecraft.world.phys.AABB(q).inflate(3);
+        owner.setGameMode(net.minecraft.world.level.GameType.SURVIVAL);
+        // Without a pickaxe nothing drops from either half (a Hearth needs the right tool, like stone).
+        BlockPos w = c.offset(-5, 0, 0);
+        hearth(w, HearthTier.STONE, false);
+        owner.gameMode.destroyBlock(w.above());
+        verdict("without_a_pickaxe_nothing_drops_and_both_halves_go", level.getBlockState(w).isAir() && level.getBlockState(w.above()).isAir()
+                && level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, new net.minecraft.world.phys.AABB(w).inflate(3),
+                        e -> e.getItem().is(ModContent.item("stone_hearth"))).isEmpty(), "");
+        owner.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, new ItemStack(Items.IRON_PICKAXE));
+        owner.gameMode.destroyBlock(q.above());
+        List<net.minecraft.world.entity.item.ItemEntity> dropped = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class, box,
+                e -> e.getItem().is(ModContent.item("stone_hearth")));
+        verdict("breaking_the_upper_half_removes_both_and_drops_one",
+                level.getBlockState(q).isAir() && level.getBlockState(q.above()).isAir() && dropped.size() == 1 && dropped.get(0).getItem().getCount() == 1,
+                "drops=" + dropped.size());
+        dropped.forEach(net.minecraft.world.entity.Entity::discard);
+        BlockPos r = c.offset(0, 0, -5);
+        hearth(r, HearthTier.STONE, false);
+        owner.gameMode.destroyBlock(r);
+        List<net.minecraft.world.entity.item.ItemEntity> dropped2 = level.getEntitiesOfClass(net.minecraft.world.entity.item.ItemEntity.class,
+                new net.minecraft.world.phys.AABB(r).inflate(3), e -> e.getItem().is(ModContent.item("stone_hearth")));
+        verdict("breaking_the_lower_half_removes_both_and_drops_one",
+                level.getBlockState(r).isAir() && level.getBlockState(r.above()).isAir() && dropped2.size() == 1, "drops=" + dropped2.size());
+        dropped2.forEach(net.minecraft.world.entity.Entity::discard);
+        owner.setItemInHand(net.minecraft.world.InteractionHand.MAIN_HAND, ItemStack.EMPTY);
+        // A half whose partner is gone goes too.
+        BlockPos t = c.offset(5, 0, 5);
+        hearth(t, HearthTier.STONE, false);
+        level.setBlock(t.above(), Blocks.AIR.defaultBlockState(), 3);
+        verdict("a_half_without_its_partner_goes_too", level.getBlockState(t).isAir(), "");
     }
 
     private static void saveAndLoad() {
