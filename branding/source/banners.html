@@ -165,11 +165,10 @@ const TIERS = [
   ["iron", "Iron Hearth", "Radius 12, 4 settlers"],
   ["golden", "Golden Hearth", "Radius 16, 8 settlers, trade level 2"],
 ];
-function tierCard(t, px, zoom) {
-  const pair = el("div", {style: "display:flex;gap:10px;align-items:flex-end"},
-    art("block/" + t[0] + "_hearth_side", px), art("block/" + t[0] + "_hearth_top_lit", px));
-  return el("div", {style: `display:flex;flex-direction:column;align-items:flex-start;gap:12px;width:${px * 2 + 90}px;zoom:${zoom || 1}`},
-    pair, el("div", {class: "cap", style: "margin:0"}, el("b", {}, t[1]), t[2]));
+function tierCard(t, h) {
+  return el("div", {style: "display:flex;flex-direction:column;align-items:center;gap:14px;width:520px"},
+    el("img", {src: "models/hearth_" + t[0] + ".png", style: `height:${h}px;filter:drop-shadow(0 12px 18px rgba(0,0,0,.55))`}),
+    el("div", {class: "cap", style: "margin:0;text-align:center"}, el("b", {}, t[1]), t[2]));
 }
 const STEPS = [
   ["1", "Light a Hearth", "Flint and steel on the Hearth"],
@@ -189,15 +188,15 @@ const ASSETS = {
     r.style.cssText += "display:flex;align-items:center;gap:24px;padding:0 28px";
     r.append(iconImg(104));
     r.append(el("div", {style: "display:flex;flex-direction:column;align-items:flex-start;gap:11px;flex:1"},
-      half(pixelText("Thorough Homesteading", 7)),
+      half(pixelText("Thorough Homesteading", 6)),
       el("div", {class: "tag", style: "font-size:16px"}, "Build a home, light the Hearth. ", el("b", {}, "A villager moves in.")),
       el("div", {class: "meta", style: "gap:6px"},
         el("span", {class: "pill on", style: "font-size:11px;padding:3px 9px"}, "Forge"),
         el("span", {class: "pill on", style: "font-size:11px;padding:3px 9px"}, "NeoForge"),
         el("span", {class: "pill", style: "font-size:11px;padding:3px 9px"}, "Three Hearths"),
         el("span", {class: "pill", style: "font-size:11px;padding:3px 9px"}, "Vanilla villagers"))));
-    const row = el("div", {style: "display:flex;gap:8px"});
-    for (const t of TIERS) row.append(art("block/" + t[0] + "_hearth_top_lit", 54));
+    const row = el("div", {style: "display:flex;gap:4px;align-items:flex-end;flex-shrink:0"});
+    for (const t of TIERS) row.append(el("img", {src: "models/hearth_" + t[0] + ".png", style: "height:104px;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5));flex-shrink:0"}));
     r.append(row);
   }],
   social: [1280, 640, (r) => {
@@ -218,15 +217,14 @@ const ASSETS = {
       el("span", {class: "pill"}, "MIT license")));
   }],
   hearths: [1920, 1080, (r) => {
-    r.style.cssText += "display:flex;flex-direction:column;align-items:center;justify-content:center;gap:50px";
-    r.append(pixelText("Three Hearths", 10));
-    const row = el("div", {style: "display:flex;gap:80px;align-items:flex-end"});
-    for (const t of TIERS) row.append(tierCard(t, 160, 1.15));
+    r.style.cssText += "display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px";
+    r.append(pixelText("Three Hearths", 9));
+    const row = el("div", {style: "display:flex;gap:70px;align-items:flex-end"});
+    TIERS.forEach((t, i) => row.append(tierCard(t, [640, 700, 720][i])));
     r.append(row);
-    const up = el("div", {style: "display:flex;gap:30px;align-items:center"},
-      art("item/iron_hearth_upgrade", 88), art("item/golden_hearth_upgrade", 88),
-      el("div", {class: "tag", style: "font-size:26px"}, "An upgrade item raises a Hearth one tier. Everything inside stays."));
-    r.append(up);
+    r.append(el("div", {style: "display:flex;gap:26px;align-items:center"},
+      art("item/iron_hearth_upgrade", 64), art("item/golden_hearth_upgrade", 64),
+      el("div", {class: "tag", style: "font-size:24px"}, "Two blocks tall. An upgrade item raises a Hearth one tier, and everything inside stays.")));
   }],
 };
 for (const [k, label] of Object.entries({features: "Features", settings: "Settings", compat: "Compatibility", faq: "FAQ"})) {
