@@ -7,9 +7,9 @@
         "type": "minecraft:all_of",
         "terms": [
           {
-            "type": "minecraft:block_state_property",
-            "block": "thoroughhomesteading:iron_hearth",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "thoroughhomesteading:iron_hearth",
+            "state": {
               "half": "lower"
             }
           },

@@ -48,14 +48,26 @@ class AssetTest {
         for (HearthTier t : HearthTier.values()) {
             String id = t.blockName();
             assertTrue(exists(BASE + "blockstates/" + id + ".json"), id);
-            assertTrue(exists(BASE + "models/block/" + id + ".json"), id);
-            assertTrue(exists(BASE + "models/block/" + id + "_lit.json"), id);
+            // A Hearth is two blocks tall: a lower half (unlit and lit) and an upper half, plus an item model of the whole thing.
+            for (String part : List.of("_lower", "_lower_lit", "_upper")) {
+                assertTrue(exists(BASE + "models/block/" + id + part + ".json"), id + part);
+                java.util.regex.Matcher m = java.util.regex.Pattern.compile("thoroughhomesteading:block/([a-z_]+)")
+                        .matcher(new String(getClass().getResourceAsStream(BASE + "models/block/" + id + part + ".json").readAllBytes(),
+                                java.nio.charset.StandardCharsets.UTF_8));
+                int found = 0;
+                while (m.find()) {
+                    BufferedImage img = image("textures/block/" + m.group(1) + ".png");
+                    assertEquals(16, img.getWidth(), m.group(1));
+                    assertEquals(16, img.getHeight(), m.group(1));
+                    found++;
+                }
+                assertTrue(found > 0, id + part + " names no texture");
+            }
             assertTrue(exists(BASE + "models/item/" + id + ".json"), id);
             assertTrue(exists(BASE + "items/" + id + ".json"), id);
-            for (String face : List.of("side", "bottom", "top", "top_lit")) {
-                BufferedImage img = image("textures/block/" + id + "_" + face + ".png");
-                assertEquals(16, img.getWidth(), id + face);
-                assertEquals(16, img.getHeight(), id + face);
+            String state = new String(getClass().getResourceAsStream(BASE + "blockstates/" + id + ".json").readAllBytes(), java.nio.charset.StandardCharsets.UTF_8);
+            for (String key : List.of("half=lower,lit=false", "half=lower,lit=true", "half=upper,lit=false", "half=upper,lit=true")) {
+                assertTrue(state.contains(key), id + " blockstate lacks " + key);
             }
         }
     }

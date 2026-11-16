@@ -7,9 +7,9 @@
         "type": "minecraft:all_of",
         "terms": [
           {
-            "type": "minecraft:block_state_property",
-            "block": "thoroughhomesteading:golden_hearth",
-            "properties": {
+            "type": "minecraft:match_block",
+            "blocks": "thoroughhomesteading:golden_hearth",
+            "state": {
               "half": "lower"
             }
           },

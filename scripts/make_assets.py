@@ -41,7 +41,7 @@ def loot(block, style):
         pool = {"rolls": 1, "bonus_rolls": 0, "entries": [{"type": "minecraft:item", "name": f"{MOD}:{block}"}],
                 "conditions": [{"condition": "minecraft:block_state_property", **lower}, {"condition": "minecraft:survives_explosion"}]}
     else:
-        pool = {"rolls": 1, "condition": {"type": "minecraft:all_of", "terms": [{"type": "minecraft:block_state_property", **lower},
+        pool = {"rolls": 1, "condition": {"type": "minecraft:all_of", "terms": [{"type": "minecraft:match_block", "blocks": f"{MOD}:{block}", "state": {"half": "lower"}},
                                                                                  {"type": "minecraft:survives_explosion"}]},
                 "entries": [{"type": "minecraft:item", "name": f"{MOD}:{block}"}]}
     return {"type": "minecraft:block", "pools": [pool], "random_sequence": f"{MOD}:blocks/{block}"}
