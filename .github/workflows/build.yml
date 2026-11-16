@@ -1,0 +1,118 @@
+name: build
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  plan:
+    # Picks the modules whose code changed in this push or pull request, so unchanged builds are never run.
+    # Docs, status, branding and workflow-only changes pick nothing. See .github/scripts/plan_matrix.py.
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.plan.outputs.matrix }}
+      any: ${{ steps.plan.outputs.any }}
+      test: ${{ steps.plan.outputs.test }}
+      combine: ${{ steps.plan.outputs.combine }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: plan
+        run: python3 .github/scripts/plan_matrix.py build --before "${{ github.event.pull_request.base.sha || github.event.before }}" --sha "${{ github.sha }}"
+
+  versions:
+    # Releases are tagged v<mod_version> and publish the Minecraft versions whose Forge and NeoForge modules carry that
+    # number, so the two loaders of one Minecraft version must agree. Versions of different Minecraft versions may differ,
+    # because only the modules that changed are bumped.
+    needs: plan
+    if: needs.plan.outputs.any == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - name: Both loaders of each Minecraft version agree on mod_version
+        run: |
+          for mc in 26.1.2 26.2 26.3; do
+            versions=$(grep -h '^mod_version=' *-$mc/gradle.properties | sort -u)
+            echo "$mc: $versions"
+            test "$(echo "$versions" | wc -l)" -eq 1
+          done
+
+  test:
+    # Unit tests for the shared logic that does not need a running game.
+    needs: [plan, versions]
+    if: needs.plan.outputs.test == 'true'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: neoforge-26.2
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - run: chmod +x gradlew
+      - run: ./gradlew test --no-daemon
+        env:
+          IMC_MAVEN_USER: ${{ secrets.IMC_MAVEN_USER }}
+          IMC_MAVEN_PASSWORD: ${{ secrets.IMC_MAVEN_PASSWORD }}
+
+  build:
+    needs: [plan, versions]
+    if: needs.plan.outputs.any == 'true'
+    strategy:
+      fail-fast: false
+      matrix: ${{ fromJson(needs.plan.outputs.matrix) }}
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ${{ matrix.layer }}
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: 25
+      - run: chmod +x gradlew
+      - run: ./gradlew build --no-daemon
+        env:
+          IMC_MAVEN_USER: ${{ secrets.IMC_MAVEN_USER }}
+          IMC_MAVEN_PASSWORD: ${{ secrets.IMC_MAVEN_PASSWORD }}
+      - uses: actions/upload-artifact@v5
+        with:
+          name: thoroughhomesteading-${{ matrix.layer }}
+          path: |
+            ${{ matrix.layer }}/build/libs/*.jar
+            !${{ matrix.layer }}/build/libs/*-sources.jar
+            !${{ matrix.layer }}/build/libs/*-dev.jar
+
+  combine:
+    # One combined jar per Minecraft version, holding both loaders. Only for Minecraft versions whose two layers were both
+    # built in this run (a change to one loader folder builds that layer alone and combines nothing).
+    needs: [plan, build]
+    if: needs.plan.outputs.combine != ''
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v5
+        with:
+          path: layers
+      - name: Combine the loader jars of each Minecraft version
+        run: |
+          mkdir -p dist
+          for mc in ${{ needs.plan.outputs.combine }}; do
+            version=$(grep -h '^mod_version=' forge-$mc/gradle.properties | cut -d= -f2)
+            python3 scripts/combine_jars.py "dist/thoroughhomesteading-mc$mc-$version.jar" layers/thoroughhomesteading-*-$mc/*.jar
+          done
+          ls -la dist
+      - name: The release jars hold no development tools
+        run: |
+          for jar in dist/*.jar; do
+            if unzip -l "$jar" | grep -E "/dev/|SelfTest|ShotTour"; then echo "dev files in $jar"; exit 1; fi
+          done
+      - uses: actions/upload-artifact@v5
+        with:
+          name: combined-jars
+          path: dist/*.jar
