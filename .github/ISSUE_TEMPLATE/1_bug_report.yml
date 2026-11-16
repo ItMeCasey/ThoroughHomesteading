@@ -1,0 +1,68 @@
+name: Bug report
+description: Something in Thorough Homesteading doesn't work the way it should.
+title: "[Bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to report this. If the game crashed, use **Crash report** instead.
+        If a Hearth won't settle anyone or a settler behaves oddly, use **Settler problem**.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you saw, and what you expected to see.
+      placeholder: The Hearth upgrade item does nothing when I use it on an Iron Hearth.
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Place a Stone Hearth and light it
+        2. Use an Iron Hearth Upgrade on it
+        3. ...
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Thorough Homesteading version
+      description: From the jar's file name or the mod list.
+    validations:
+      required: true
+  - type: input
+    id: minecraft
+    attributes:
+      label: Minecraft and loader versions
+      placeholder: Minecraft 26.2, NeoForge ...
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where is Thorough Homesteading installed?
+      options:
+        - Single player
+        - Dedicated server
+    validations:
+      required: true
+  - type: textarea
+    id: mods
+    attributes:
+      label: Other mods
+      description: The mods in your instance, or a link to your modpack. Leave empty if it happens with Thorough Homesteading alone.
+  - type: textarea
+    id: media
+    attributes:
+      label: Screenshots or video
+      description: Drag images or a short clip in here.
+  - type: textarea
+    id: log
+    attributes:
+      label: Log
+      description: |
+        `logs/latest.log` from your Minecraft folder. For a long log, upload it to https://mclo.gs or a GitHub gist and paste the link.
+      render: text

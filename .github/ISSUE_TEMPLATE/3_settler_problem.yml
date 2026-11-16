@@ -1,0 +1,37 @@
+name: Settler problem
+description: A Hearth won't settle anyone, or a settler picks the wrong profession, bed or trades.
+title: "[Settler] "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: shown
+    attributes:
+      label: What happens
+      description: The Hearth tier, what is around it (beds, workstations, light, food), and what the look-at lines show.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected, and why
+      description: The rule or number you expected, from the wiki or your config file.
+    validations:
+      required: true
+  - type: textarea
+    id: data
+    attributes:
+      label: Datapack or config changes
+      description: Any settling recipe, trade file or Hearth tier file you added, and the lines you changed in config/thoroughhomesteading-common.toml.
+  - type: input
+    id: version
+    attributes:
+      label: Thorough Homesteading version
+    validations:
+      required: true
+  - type: input
+    id: minecraft
+    attributes:
+      label: Minecraft and loader versions
+      placeholder: Minecraft 26.2, NeoForge ...
+    validations:
+      required: true
