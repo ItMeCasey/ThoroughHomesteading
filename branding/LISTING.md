@@ -6,7 +6,7 @@ Everything needed to fill in the CurseForge project form. The icon files are in 
 
 | Field | CurseForge |
 |---|---|
-| Project ID | not created yet (Casey creates the project; put the id here and in the upload script) |
+| Project ID | 1810974 (https://www.curseforge.com/minecraft/mc-mods/thorough-homesteading) |
 | Name | Thorough Homesteading |
 | Slug / URL | `thoroughhomesteading` |
 | Mod id | `thoroughhomesteading` |
@@ -33,6 +33,6 @@ The CurseForge description is in [`curseforge/DESCRIPTION.md`](../curseforge/DES
 
 ## Checklist
 
-1. Create the CurseForge project with `icon_512.png` as the logo, record the project id above and in the upload script, and add the `CURSEFORGE_TOKEN` repository secret.
+1. Set the project logo to `icon_512.png`, put the project id in the upload script, and add the `CURSEFORGE_TOKEN` repository secret.
 2. Upload the gallery images `banners/social.png`, `banners/features.png` and `banners/hearths.png`, and use `banners/banner.png` and the `h_*.png` headers in the description. In-game screenshots are not included because no client has run yet.
 3. `icon/thoroughhomesteading_logo.png` is the mod list logo (a copy is in `common/src/main/resources`).
