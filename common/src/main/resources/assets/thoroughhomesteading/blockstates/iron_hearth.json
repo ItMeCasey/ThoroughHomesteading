@@ -1,10 +1,16 @@
 {
   "variants": {
-    "lit=false": {
-      "model": "thoroughhomesteading:block/iron_hearth"
+    "half=lower,lit=false": {
+      "model": "thoroughhomesteading:block/iron_hearth_lower"
     },
-    "lit=true": {
-      "model": "thoroughhomesteading:block/iron_hearth_lit"
+    "half=lower,lit=true": {
+      "model": "thoroughhomesteading:block/iron_hearth_lower_lit"
+    },
+    "half=upper,lit=false": {
+      "model": "thoroughhomesteading:block/iron_hearth_upper"
+    },
+    "half=upper,lit=true": {
+      "model": "thoroughhomesteading:block/iron_hearth_upper"
     }
   }
 }

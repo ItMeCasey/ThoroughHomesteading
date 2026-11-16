@@ -5,7 +5,7 @@ Usage: python scripts/make_textures.py [path to a Minecraft client jar or a fold
 The vanilla textures are read from the jar (the default is the client jar Gradle leaves in ~/.gradle/caches/neoformruntime/artifacts);
 nothing from it is copied into the repository except what is generated here.
 
-Hearth blocks: the side takes its pixels from the vanilla block of the tier (stone bricks, iron block, gold block) with a sooty band at the
+Hearth blocks (superseded, see make_hearth_textures.py): the side took its pixels from the vanilla block of the tier (stone bricks, iron block, gold block) with a sooty band at the
 bottom and a lighter top row, the bottom is the same block darkened, the top has the block's rim around a pit of ash (unlit) or embers
 (lit) in the colors of the vanilla campfire and coal block. Upgrade items are a bell drawn pixel by pixel in the palette of the vanilla iron
 and gold ingots. The textures are not approved art.
@@ -196,8 +196,7 @@ def logo(v):
 
 def main():
     v = Vanilla(sys.argv[1] if len(sys.argv) > 1 else None)
-    for tier in ("stone", "iron", "golden"):
-        hearth(v, tier)
+    # The Hearth block textures are made by scripts/make_hearth_textures.py.
     for tier in ("iron", "golden"):
         upgrade_icon(v, tier)
     if not os.path.exists(os.path.join(ROOT, "branding", "icon", "icon_512.png")):

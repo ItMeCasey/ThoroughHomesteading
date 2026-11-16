@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "thoroughhomesteading:block/golden_hearth"
+    "model": "thoroughhomesteading:item/golden_hearth"
   }
 }

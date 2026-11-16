@@ -34,25 +34,6 @@ def write(path, data):
             f.write("\n")
 
 
-def hearth_model(tier, lit):
-    suffix = "_lit" if lit else ""
-    tex = {
-        "particle": f"{MOD}:block/{tier}_hearth_side",
-        "side": f"{MOD}:block/{tier}_hearth_side",
-        "bottom": f"{MOD}:block/{tier}_hearth_bottom",
-        "top": f"{MOD}:block/{tier}_hearth_top{suffix}",
-    }
-    faces = {
-        "down": {"texture": "#bottom", "cullface": "down"},
-        "up": {"texture": "#top"},
-        "north": {"texture": "#side", "cullface": "north"},
-        "south": {"texture": "#side", "cullface": "south"},
-        "west": {"texture": "#side", "cullface": "west"},
-        "east": {"texture": "#side", "cullface": "east"},
-    }
-    return {"textures": tex, "elements": [{"from": [0, 0, 0], "to": [16, 10, 16], "faces": faces}]}
-
-
 def loot(block, style):
     if style == "old":
         pool = {"rolls": 1, "bonus_rolls": 0, "entries": [{"type": "minecraft:item", "name": f"{MOD}:{block}"}],
@@ -96,13 +77,7 @@ LANG = {
 
 
 def main():
-    for t in TIERS:
-        write(os.path.join(ASSETS, "blockstates", f"{t}_hearth.json"), {"variants": {
-            "lit=false": {"model": f"{MOD}:block/{t}_hearth"}, "lit=true": {"model": f"{MOD}:block/{t}_hearth_lit"}}})
-        write(os.path.join(ASSETS, "models", "block", f"{t}_hearth.json"), hearth_model(t, False))
-        write(os.path.join(ASSETS, "models", "block", f"{t}_hearth_lit.json"), hearth_model(t, True))
-        write(os.path.join(ASSETS, "models", "item", f"{t}_hearth.json"), {"parent": f"{MOD}:block/{t}_hearth"})
-        write(os.path.join(ASSETS, "items", f"{t}_hearth.json"), {"model": {"type": "minecraft:model", "model": f"{MOD}:block/{t}_hearth"}})
+    # The Hearth blockstates, models and item models come from scripts/make_hearth_models.py.
     for t in TIERS[1:]:
         name = f"{t}_hearth_upgrade"
         write(os.path.join(ASSETS, "models", "item", f"{name}.json"), {"parent": "minecraft:item/generated", "textures": {"layer0": f"{MOD}:item/{name}"}})
