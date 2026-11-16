@@ -1,6 +1,10 @@
+![Thorough Homesteading](https://raw.githubusercontent.com/ItMeCasey/ThoroughHomesteading/main/branding/banners/banner.png)
+
 **A skyblock home for villagers: build a bed and a workstation around a lit Hearth, feed it, and a settler walks in. For Forge and NeoForge.**
 
 In a void or skyblock world there is no village, so there are no villagers and no trading. Thorough Homesteading adds a deliberate way to get them. Place a Hearth, light it, build a home around it, and put food in. When everything is right, a countdown runs, and at its end a vanilla villager walks onto your island. No villager ever appears from nothing: you build the conditions.
+
+![How a settler arrives](https://raw.githubusercontent.com/ItMeCasey/ThoroughHomesteading/main/branding/banners/features.png)
 
 # Features
 
@@ -14,6 +18,8 @@ In a void or skyblock world there is no village, so there are no villagers and n
 - **Data driven:** settling recipes, trades and Hearth tiers are datapack JSON. Add pack-specific trades per profession and level, or replace them.
 - **Scripting:** ModJS scripts get a `Homesteading` global and a `HomesteadingEvents` global. KubeJS gets the same through a helper script, and every recipe is plain JSON.
 - **Quests:** Barely Questing gets a `settler` task type.
+
+![The three Hearths](https://raw.githubusercontent.com/ItMeCasey/ThoroughHomesteading/main/branding/banners/hearths.png)
 
 # Settings
 
