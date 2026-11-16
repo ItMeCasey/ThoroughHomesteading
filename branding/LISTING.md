@@ -19,7 +19,7 @@ Everything needed to fill in the CurseForge project form. The icon files are in 
 | License | MIT |
 | Source | https://github.com/ItMeCasey/ThoroughHomesteading |
 | Issues | https://github.com/ItMeCasey/ThoroughHomesteading/issues |
-| Wiki | https://itmecasey.com/wiki/thoroughhomesteading/ (not deployed yet; add the link once it is live) |
+| Wiki | https://itmecasey.com/wiki/thoroughhomesteading/ |
 
 ### One-line description
 

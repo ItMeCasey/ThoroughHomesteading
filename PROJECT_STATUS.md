@@ -28,7 +28,7 @@ Spend: none
 ## Release
 - [ ] GitHub repository, CI and release workflow (w:2)
 - [ ] CurseForge project created and first release uploaded (w:2)
-- [ ] Wiki deployed live (w:1)
+- [x] Wiki deployed live (w:1)
 
 ## Notes
 - Verified headless: 29 unit tests per module; server self test `SELFTEST DONE failures=0` (149 checks) on Forge and NeoForge 26.1.2, 26.2 and 26.3, also with the ModJS jar installed (script global and events ran) and with Barely Questing installed (the `settler` task type registered).

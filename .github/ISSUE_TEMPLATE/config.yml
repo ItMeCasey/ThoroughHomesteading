@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
   - name: How Thorough Homesteading works
-    url: https://github.com/ItMeCasey/ThoroughHomesteading/blob/main/docs/DESIGN.md
-    about: The Hearths, the home check, arrival, professions, trades and the data files. Read this first.
+    url: https://itmecasey.com/wiki/thoroughhomesteading/
+    about: The Hearths, the home check, arrival, professions, trades, the config file and the scripting API. Read this first.
+  - name: Troubleshooting
+    url: https://itmecasey.com/wiki/thoroughhomesteading/?p=troubleshooting
+    about: Hearths that will not settle anyone and settlers that pick the wrong home.
