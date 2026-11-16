@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "SSS",
+    "SCS",
+    "SSS"
+  ],
+  "key": {
+    "S": "minecraft:stone_bricks",
+    "C": "minecraft:campfire"
+  },
+  "result": {
+    "id": "thoroughhomesteading:stone_hearth",
+    "count": 1
+  }
+}

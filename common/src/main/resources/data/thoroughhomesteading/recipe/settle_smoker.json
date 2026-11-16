@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:smoker",
+  "profession": "minecraft:butcher",
+  "min_tier": 1
+}

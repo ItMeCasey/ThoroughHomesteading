@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:stonecutter",
+  "profession": "minecraft:mason",
+  "min_tier": 1
+}

@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:cartography_table",
+  "profession": "minecraft:cartographer",
+  "min_tier": 1
+}

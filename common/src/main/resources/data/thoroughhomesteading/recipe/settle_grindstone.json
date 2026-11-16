@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:grindstone",
+  "profession": "minecraft:weaponsmith",
+  "min_tier": 1
+}

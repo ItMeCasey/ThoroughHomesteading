@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:loom",
+  "profession": "minecraft:shepherd",
+  "min_tier": 1
+}

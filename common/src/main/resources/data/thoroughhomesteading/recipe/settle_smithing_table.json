@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:smithing_table",
+  "profession": "minecraft:toolsmith",
+  "min_tier": 1
+}

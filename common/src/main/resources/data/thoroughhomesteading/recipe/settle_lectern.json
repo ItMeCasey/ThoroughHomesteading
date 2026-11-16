@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:lectern",
+  "profession": "minecraft:librarian",
+  "min_tier": 1
+}

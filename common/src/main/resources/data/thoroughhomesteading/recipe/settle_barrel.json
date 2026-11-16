@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:barrel",
+  "profession": "minecraft:fisherman",
+  "min_tier": 1
+}

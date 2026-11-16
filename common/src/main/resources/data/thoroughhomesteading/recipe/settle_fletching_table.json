@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:fletching_table",
+  "profession": "minecraft:fletcher",
+  "min_tier": 1
+}

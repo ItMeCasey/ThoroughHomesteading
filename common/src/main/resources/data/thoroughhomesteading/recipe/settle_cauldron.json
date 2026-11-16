@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:cauldron",
+  "profession": "minecraft:leatherworker",
+  "min_tier": 1
+}

@@ -1,0 +1,46 @@
+{
+  "name": "Thorough Homesteading",
+  "tagline": "Build a home, light the Hearth and a villager settles on your island, for Forge and NeoForge.",
+  "icon": "images/icon.png",
+  "home": "home",
+  "minecraft": "26.1.2, 26.2, 26.3",
+  "loaders": "NeoForge, Forge",
+  "license": "Thorough Homesteading is released under the MIT License.",
+  "links": [
+    {
+      "label": "Source",
+      "url": "https://github.com/ItMeCasey/ThoroughHomesteading"
+    },
+    {
+      "label": "Issues",
+      "url": "https://github.com/ItMeCasey/ThoroughHomesteading/issues"
+    }
+  ],
+  "nav": [
+    {
+      "title": "Getting started",
+      "pages": [
+        { "slug": "home", "title": "Thorough Homesteading" },
+        { "slug": "hearth", "title": "The Hearth" },
+        { "slug": "home-check", "title": "The home check" }
+      ]
+    },
+    {
+      "title": "Pack makers",
+      "pages": [
+        { "slug": "settling", "title": "Settling recipes" },
+        { "slug": "trades", "title": "Trades and tiers" },
+        { "slug": "settings", "title": "Settings" },
+        { "slug": "scripting", "title": "Scripting" },
+        { "slug": "compatibility", "title": "Compatibility" }
+      ]
+    },
+    {
+      "title": "Reference",
+      "pages": [
+        { "slug": "versions", "title": "Versions" },
+        { "slug": "troubleshooting", "title": "Troubleshooting" }
+      ]
+    }
+  ]
+}

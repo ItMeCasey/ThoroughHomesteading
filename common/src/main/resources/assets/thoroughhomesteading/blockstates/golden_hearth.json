@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "thoroughhomesteading:block/golden_hearth"
+    },
+    "lit=true": {
+      "model": "thoroughhomesteading:block/golden_hearth_lit"
+    }
+  }
+}

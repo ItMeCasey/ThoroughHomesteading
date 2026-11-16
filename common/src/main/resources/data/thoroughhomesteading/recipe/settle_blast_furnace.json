@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:blast_furnace",
+  "profession": "minecraft:armorer",
+  "min_tier": 1
+}

@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:brewing_stand",
+  "profession": "minecraft:cleric",
+  "min_tier": 1
+}

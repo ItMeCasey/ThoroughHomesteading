@@ -1,0 +1,6 @@
+{
+  "type": "thoroughhomesteading:settling",
+  "workstation": "minecraft:composter",
+  "profession": "minecraft:farmer",
+  "min_tier": 1
+}

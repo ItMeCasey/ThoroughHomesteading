@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": 1,
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "thoroughhomesteading:iron_hearth"
+        }
+      ]
+    }
+  ],
+  "random_sequence": "thoroughhomesteading:blocks/iron_hearth"
+}

@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "lit=false": {
+      "model": "thoroughhomesteading:block/iron_hearth"
+    },
+    "lit=true": {
+      "model": "thoroughhomesteading:block/iron_hearth_lit"
+    }
+  }
+}
